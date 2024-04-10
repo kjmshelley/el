@@ -25,6 +25,9 @@ let FILE_HTML = "";
 // router.get("/organizations", (req, res) => {
 //     res.sendFile(`${PATH_NAME}/organizations.html`);
 // });
+router.get("/web/logo/user", async (req, res) => {
+    res.sendFile(path.join(__dirname, "../../public/assets/images/user.png"));
+});
 
 router.get("/qr/:email", async (req, res) => {
     let html = `${FILE_HTML}`;
