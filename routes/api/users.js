@@ -60,6 +60,29 @@ router.get("/check", async (req, res) => {
     }
 });
 
+router.get("/rooms", async (req, res) => {
+    try {
+        const {
+            qr,
+            code
+        } = req.query;
+
+        // make sure qr is not expired
+        // make sure qr email = req.query email
+        // check code 
+        const data = await checkUser(code);
+        console.log(data);
+        if (data.length > 0) {
+            res.status(200).json({ status: "FOUND" });
+        } else {
+            res.status(404).json({ status: "NOT FOUND"});
+        }
+    } catch (ex) {
+        console.log(ex);
+        res.status(500).json({ status: "ERROR" });
+    }
+});
+
 router.get("/:email", async (req, res) => {
     try {
         const users = await getUser(req.params.email);
