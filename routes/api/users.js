@@ -71,11 +71,11 @@ router.get("/rooms", async (req, res) => {
         // make sure qr email = req.query email
         // check code 
         const data = await checkUser(code);
-        console.log(data);
+        //console.log(data);
         if (data.length > 0) {
-            res.status(200).json({ status: "FOUND" });
+            res.status(200).json(data);
         } else {
-            res.status(404).json({ status: "NOT FOUND"});
+            res.status(404).json([]);
         }
     } catch (ex) {
         console.log(ex);
