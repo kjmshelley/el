@@ -1,9 +1,13 @@
+const moment = require("moment");
 const express = require("express");
 const router = express.Router();
 const { readFile } = require("fs/promises");
 
 const path = require("path");
 const PATH_NAME = path.join(__dirname, "../../public/pages/");
+
+const { usersDB } = require("../../db");
+const { getUser, } = usersDB;
 
 const {
     generateQRCode,
@@ -22,14 +26,15 @@ let FILE_HTML = "";
 //     res.sendFile(`${PATH_NAME}/organizations.html`);
 // });
 
-router.get("/qr", async (req, res) => {
+router.get("/qr/:email", async (req, res) => {
     let html = `${FILE_HTML}`;
-    let { qr } = req.query;
-    console.log(encodeURIComponent(req.query.qr));
-    if (!req.query.qr) {
-        qr = await generateQRCode("NOT FOUND");
+    let { email } = req.params;
+    let qr = "";
+    if (email) {
+        const users = await getUser(email);
+        qr = await generateQRCode(`${users.at(0).email}-${moment().format("MM/DD/YYYY HH:MM:SS").replace(/ /g, "-")}`);
     } else {
-        qr = encodeURIComponent(req.query.qr);
+        qr = await generateQRCode("NOT FOUND");
     }
     html = html.replace("{{IMG_SRC}}", qr);
     res.send(html);
