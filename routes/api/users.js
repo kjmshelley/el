@@ -6,6 +6,7 @@ const {
     getUsers,
     getUser,
     addUser,
+    checkUser,
 } = usersDB;
 
 const {
@@ -33,6 +34,31 @@ router.post("/", async (req, res) => {
     } catch (ex) {
         console.log(ex);
         res.status(500);
+    }
+});
+
+router.get("/check", async (req, res) => {
+    try {
+        const {
+            email,
+            qr,
+            code
+        } = req.query;
+        
+        //const users = await getUser(email);
+        // make sure qr is not expired
+        // make sure qr email = req.query email
+        // check code 
+        const data = await checkUser(code);
+        console.log(data);
+        if (data.length > 0) {
+            res.status(200).json(data);
+        } else {
+            res.status(404).json({ status: "NOT FOUND"});
+        }
+    } catch (ex) {
+        console.log(ex);
+        res.status(500).json({ status: "ERROR" });
     }
 });
 
