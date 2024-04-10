@@ -39,7 +39,7 @@ router.post("/", async (req, res) => {
 
 router.get("/check", async (req, res) => {
     try {
-        const {
+        let {
             qr,
             code
         } = req.query;
@@ -47,10 +47,16 @@ router.get("/check", async (req, res) => {
         // make sure qr is not expired
         // make sure qr email = req.query email
         // check code 
-        const data = await checkUser(code);
-        console.log(data);
+        if (qr && qr.indexOf("-") > -1) {
+            qr = qr.split("-").at(0);
+            qr = qr.trim();
+            qr = qr.replace(/"/g, '');
+            qr = qr.replace(/'/g, '');
+        }
+        const data = await checkUser(code, qr);
+        //console.log(data);
         if (data.length > 0) {
-            res.status(200).json({ status: "FOUND" });
+            res.status(200).json({ status: "FOUND", code: data.at(0).code });
         } else {
             res.status(404).json({ status: "NOT FOUND"});
         }
