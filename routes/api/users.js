@@ -36,8 +36,13 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/:email", async (req, res) => {
-    const users = await getUser(req.params.email);
-    res.json(users.at(0));
+    try {
+        const users = await getUser(req.params.email);
+        res.json(users.at(0));
+    } catch (ex) {
+        console.log(ex);
+        res.status(500).json({ status: "ERROR" });
+    }
 });
 
 module.exports = router;
