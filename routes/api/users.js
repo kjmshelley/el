@@ -38,7 +38,10 @@ router.post("/", async (req, res) => {
 router.get("/:email", async (req, res) => {
     try {
         const users = await getUser(req.params.email);
-        res.json(users.at(0));
+        res.json({
+            created: moment(users.at(0)).format("MM/DD/YYYY"),
+            ...users.at(0)
+        });
     } catch (ex) {
         console.log(ex);
         res.status(500).json({ status: "ERROR" });
