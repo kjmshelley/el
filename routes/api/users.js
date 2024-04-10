@@ -25,7 +25,7 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
     try {
         const { uid, name, email, organization } = req.body;
-        const img = await generateQRCode(email);
+        const img = await generateQRCode(`${email}-${moment().toString()}`);
         const code = await generateCode(email);
         const results = await addUser({ uid, name, email, organization, img, code });
         res.status(200).json({status: results ? "success" : "failed" });
