@@ -41,6 +41,7 @@ router.get("/:email", async (req, res) => {
         const users = await getUser(req.params.email);
         res.json({
             ...users.at(0),
+            qrcodeurl: `https://entrylistapi.onrender.com/qr/${users.at(0).qrcode}`,
             created: moment(users.at(0)).format("MM/DD/YYYY"),
         });
     } catch (ex) {
