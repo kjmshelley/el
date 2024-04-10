@@ -1,3 +1,4 @@
+const moment = require("moment");
 const express = require("express");
 const router = express.Router();
 const { usersDB } = require("../../db");
@@ -39,8 +40,8 @@ router.get("/:email", async (req, res) => {
     try {
         const users = await getUser(req.params.email);
         res.json({
+            ...users.at(0),
             created: moment(users.at(0)).format("MM/DD/YYYY"),
-            ...users.at(0)
         });
     } catch (ex) {
         console.log(ex);
