@@ -18,7 +18,9 @@
     "body-parser": "^1.20.2",
     "dotenv": "^16.4.4",
     "express": "^4.18.2",
-    "pg": "^8.11.3"
+    "generate-password": "^1.7.1",
+    "pg": "^8.11.3",
+    "qrcode": "^1.5.3"
   },
   "bugs": {
     "url": "https://github.com/kjmshelley/el/issues"

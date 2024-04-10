@@ -1,12 +1,16 @@
 const express = require("express");
 const router = express.Router();
-
 const { usersDB } = require("../../db");
 const {
     getUsers,
     getUser,
     addUser,
 } = usersDB;
+
+const {
+    generateQRCode,
+    generateCode,
+} = require("../../etc/helpers");
 
 router.get("/", async (req, res) => {
     const { organization } = req.query;
@@ -18,9 +22,17 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-    const { uid, name, email, organization } = req.body;
-    const results = await addUser({ uid, name, email, organization });
-    res.status(200).json({status: results ? "success" : "failed" });
+    try {
+        const { uid, name, email, organization } = req.body;
+        const img = await generateQRCode(email);
+        const code = await generateCode(email);
+        const results = await addUser({ uid, name, email, organization, img, code });
+        res.status(200).json({status: results ? "success" : "failed" });
+        res.status(200);
+    } catch (ex) {
+        console.log(ex);
+        res.status(500);
+    }
 });
 
 router.get("/:email", async (req, res) => {

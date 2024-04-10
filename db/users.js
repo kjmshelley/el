@@ -26,11 +26,11 @@ async function getUser(email) {
     }
 }
 
-async function addUser({ uid, name, email, organization }) {
+async function addUser({ uid, name, email, organization, img, code }) {
     try {
         const client = new Client();
         await client.connect();
-        await client.query(`INSERT INTO el_users (uid, "name", email, created, organization) VALUES($1, $2, $3, NOW(), $4)`, [uid, name, email, organization]);
+        await client.query(`INSERT INTO el_users (uid, "name", email, created, organization, qrCode, code) VALUES($1, $2, $3, NOW(), $4, $5, $6)`, [uid, name, email, organization, img, code]);
         await client.end();
         return true;
     } catch (ex) {
